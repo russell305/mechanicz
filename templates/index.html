@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>  </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
+      src = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM"
+    </script>
+		<style>
+				html, body {
+					height: 100%;
+					background-color: #FFFFF0;
+					margin: 0;
+					padding: 0;
+				}
+				button{
+					margin-top: 1.5%;
+				}
+				p{
+
+				}
+				#map {
+					height: 95%;
+					margin-right: 8%;
+					margin-left: 8%;
+					margin-top: 2%;
+				}
+				.name{
+					font-size: 30px;
+				}
+				.container-fluid {
+					margin-top: 4%;
+					margin-right: 8%;
+					margin-left: 8%;
+
+				}
+				.space {
+					height: 8%;
+
+				}
+		</style>
+	</head>
+  <body>
+		<div class="container-fluid text-center">
+			<h1>Mechanics Near Me | Mecánica Cerca De Mí</h1>
+			<h3>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h3>
+			<h4>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h4>
+			<div class="row">
+					 <div class="col-md-6">
+						 <p>Do you have Free Tows with Insurance or AAA? Most offer free tows with minimum 25 free miles. Save money and use to get your car to a mechanic today! |
+¿Tienes Tows gratis con seguro o AAA? La mayoría ofrece remolques gratuitos con un mínimo de 25 millas gratis. ¡Ahorre dinero y utilícelo para llevar su auto a un mecánico hoy!</p>
+						 <p></p>
+					 </div>
+					 <div class="col-md-6">
+						 <p> Are you a mechanic?  Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</p>
+						 <form action="{{ url_for('signup') }}" method="post">
+							 <button class="btn btn-success btn-lg active" aria-pressed="true">Sign Up</button>
+						 </form>
+
+					 </div>
+			</div>
+
+
+		</div>
+
+		<div id="map"></div>
+		<div class="space">
+
+		</div>
+	  <script>
+
+	     var mechanic_list=JSON.parse('{{ mechanic_list| tojson | safe }}');
+
+	     function initMap() {
+	         var map = new google.maps.Map(document.getElementById('map'), {
+	           zoom: 9,
+	           center: {lat: 25.7917, lng: -80.4}
+	         });
+
+	         var marker = {}
+	         var myLatLng =[]
+					 //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+	         for (var i = 0; i < mechanic_list.length; i++) {
+	           myLatLng[i] = {lat: mechanic_list[i]['latitude'], lng: mechanic_list[i]['longitude']};
+	           marker = new google.maps.Marker({
+	           position: myLatLng[i],
+	           map: map,
+	           title: 'Hello World!',
+						 //icon: image
+	           });
+	           // process multiple info windows
+	           (function(marker, i) {
+	             google.maps.event.addListener(marker, 'click', function() {
+	                   infowindow = new google.maps.InfoWindow({
+	                       content: '<div class="container-fluid">'+
+												 						'<div class="row">'+
+																			'<div class="col-md-4">'+
+																				'<div>'+mechanic_list[i]['name']+'</div>'+
+																			'</div>'+
+																			'<div class="col-md-4">'+
+																				'<div>'+mechanic_list[i]['address']+'</div>'+
+																			'</div>'+
+																			'<div class="col-md-4">'+
+																				'<div>'+mechanic_list[i]['phone']+'</div>'+
+																			'</div>'+
+																		'</div>'+
+												 					'</div>'+
+												 					'<div class="name">'+"Name.... "+mechanic_list[i]['name']+'</div>'+
+																	'<div class="text-center">'+mechanic_list[i]['name']+'</div>'+
+																	'<h1 class=" ">Uluru</h1>'+ "Name " + mechanic_list[i]['name'] +
+												 					'<p>< also referred to as <b>Ayers Rock</b>, is a large ' +
+														      'sandstone rock formation in the southern part of the '+
+														      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+														      'south west of the nearest large town, Alice Springs; 450&#160;km '+
+														      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+														      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+														      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+														      'Aboriginal people of the area. It has many springs, waterholes, '+
+														      'rock caves and ancient paintings. Uluru is listed as a World '+
+														      'Heritage Site.</p>'//"Name " + mechanic_list[i]['name'] + "\n Address" + mechanic_list[i]['address']
+
+
+
+
+	                   });
+	                   infowindow.open(map, marker);
+	               });
+	           })(marker, i);
+	         }
+	     }
+
+	     </script>
+  </body>
+</html>
