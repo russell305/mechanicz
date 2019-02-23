@@ -9,74 +9,18 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
       src = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM"
     </script>
-		<style>
-				html, body {
-					height: 100%;
-					background-color: #FFFFF0;
-					margin: 0;
-					padding: 0;
-				}
-				button{
-					margin-top: 1.5%;
-				}
-				p{
-
-				}
-				#map {
-					height: 95%;
-					margin-right: 8%;
-					margin-left: 8%;
-					margin-top: 2%;
-				}
-				.name{
-					font-size: 30px;
-				}
-				.container-fluid {
-					margin-top: 4%;
-					margin-right: 8%;
-					margin-left: 8%;
-
-				}
-				.space {
-					height: 8%;
-
-				}
-		</style>
-	</head>
-  <body>
-		<div class="container-fluid text-center">
-			<h1>Mechanics Near Me | Mecánica Cerca De Mí</h1>
-			<h3>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h3>
-			<h4>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h4>
-			<div class="row">
-					 <div class="col-md-6">
-						 <p>Do you have Free Tows with Insurance or AAA? Most offer free tows with minimum 25 free miles. Save money and use to get your car to a mechanic today! |
-¿Tienes Tows gratis con seguro o AAA? La mayoría ofrece remolques gratuitos con un mínimo de 25 millas gratis. ¡Ahorre dinero y utilícelo para llevar su auto a un mecánico hoy!</p>
-						 <p></p>
-					 </div>
-					 <div class="col-md-6">
-						 <p> Are you a mechanic?  Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</p>
-						 <form action="{{ url_for('signup') }}" method="post">
-							 <button class="btn btn-success btn-lg active" aria-pressed="true">Sign Up</button>
-						 </form>
-
-					 </div>
-			</div>
-
-
-		</div>
-
-		<div id="map"></div>
-		<div class="space">
-
-		</div>
-	  <script>
+		<script
+			  src="https://code.jquery.com/jquery-3.3.1.js"
+			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			  crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+		<script>
 
 	     var mechanic_list=JSON.parse('{{ mechanic_list| tojson | safe }}');
 
 	     function initMap() {
 	         var map = new google.maps.Map(document.getElementById('map'), {
-	           zoom: 9,
+	           zoom: 11,
 	           center: {lat: 25.7917, lng: -80.4}
 	         });
 
@@ -108,9 +52,9 @@
 																			'</div>'+
 																		'</div>'+
 												 					'</div>'+
-												 					'<div class="name">'+"Name.... "+mechanic_list[i]['name']+'</div>'+
-																	'<div class="text-center">'+mechanic_list[i]['name']+'</div>'+
-																	'<h1 class=" ">Uluru</h1>'+ "Name " + mechanic_list[i]['name'] +
+												 					'<div class="name">'+"email.... "+mechanic_list[i]['email']+'</div>'+
+																	'<div class="text-center">'+"years.... "+mechanic_list[i]['description']+'</div>'+
+																	'<h1 class=" ">Uluru</h1>'+ "Name " + mechanic_list[i]['years'] +
 												 					'<p>< also referred to as <b>Ayers Rock</b>, is a large ' +
 														      'sandstone rock formation in the southern part of the '+
 														      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
@@ -133,5 +77,73 @@
 	     }
 
 	     </script>
+
+
+		<style>
+				html, body {
+					height: 100%;
+					background-color: #FFFFF0;
+					margin: 0;
+					padding: 0;
+					font: monseratt;
+				}
+				button{
+					margin-top: 1.5%;
+				}
+				p{
+
+				}
+				#map {
+					height: 95%;
+					margin-right: 8%;
+					margin-left: 8%;
+					margin-top: 2%;
+				}
+				.name{
+					font-size: 30px;
+				}
+				.container-fluid {
+					margin-top: 4%;
+					margin-right: 8%;
+					margin-left: 8%;
+
+				}
+				.space {
+					height: 8%;
+				}
+				h5{
+					color:green;
+				}
+		</style>
+	</head>
+  <body>
+		<div class="container-fluid text-center">
+			<h1>Mechanics Near Me | Mecánica Cerca De Mí</h1>
+			<h3>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h3>
+			<h4>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h4>
+			<div class="row">
+					 <div class="col-md-6">
+						 <p>Do you have Free Tows with Insurance or AAA? Most offer free tows with minimum 25 free miles. Save money and use to get your car to a mechanic today! |
+¿Tienes Tows gratis con seguro o AAA? La mayoría ofrece remolques gratuitos con un mínimo de 25 millas gratis. ¡Ahorre dinero y utilícelo para llevar su auto a un mecánico hoy!</p>
+						 <p></p>
+					 </div>
+					 <div class="col-md-6">
+						 <h5>Are you a mechanic?  Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</h5>
+
+						 <form action="{{ url_for('signup') }}" method="post">
+							 <button class="btn btn-success btn-lg active" aria-pressed="true">Sign Up</button>
+						 </form>
+
+					 </div>
+			</div>
+
+
+		</div>
+
+		<div id="map"></div>
+		<div class="space">
+
+		</div>
+
   </body>
 </html>
