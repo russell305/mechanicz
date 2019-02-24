@@ -29,10 +29,8 @@ db = scoped_session(sessionmaker(bind=engine)) # for individual sessions
 
 mechanic_list=[]
 
-
 #db.execute("CREATE TABLE mechanic_list1(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, years SMALLINT NOT NULL, description VARCHAR NOT NULL, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
 #db.commit()
-
 
 
 @app.route("/", methods = ["GET"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
@@ -76,15 +74,33 @@ def index():
 
 	return render_template("index.html", mechanic_list=mechanic_list)
 
-@app.route("/signup", methods = ["POST"])
+@app.route("/signup", methods = ["POST"]) #way to get sign in from index to sign-up page
 def signup():
 	return render_template("signup.html")
+
+@app.route("/sign-in", methods = ["POST"]) #way to get sign in from index to sign-in page
+def signin():
+	return render_template("sign-in.html")
+
+@app.route("/user", methods = ["POST"]) # user CRUD
+def user():
+	name = request.form.get("name")
+	password = request.form.get("password")
+
+	if db.execute("SELECT * FROM mechanic_list1 WHERE name = :name AND password = :password", {"name": name, "password": password}).rowcount == 0:
+		return "name and password dont match"
+	else:
+		user = db.execute("SELECT * FROM mechanic_list1 WHERE name = :name AND password = :password", {"name": name, "password": password}).fetchall()
+	print ("user",user)
+	return render_template("user.html", user=user)
 
 @app.route("/signup_check", methods = ["POST"])
 def signup_check():
 	name = request.form.get("name")
 	password = request.form.get("password")
 	phone = request.form.get("phone")
+	if db.execute("SELECT * FROM mechanic_list1 WHERE phone = :phone", {"phone": phone}).rowcount > 0:
+		return "Number already exist sucker!"
 	street = request.form.get("street")
 	city = request.form.get("city")
 	state = request.form.get("state")

@@ -53,21 +53,7 @@
 																		'</div>'+
 												 					'</div>'+
 												 					'<div class="name">'+"email.... "+mechanic_list[i]['email']+'</div>'+
-																	'<div class="text-center">'+"years.... "+mechanic_list[i]['description']+'</div>'+
-																	'<h1 class=" ">Uluru</h1>'+ "Name " + mechanic_list[i]['years'] +
-												 					'<p>< also referred to as <b>Ayers Rock</b>, is a large ' +
-														      'sandstone rock formation in the southern part of the '+
-														      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-														      'south west of the nearest large town, Alice Springs; 450&#160;km '+
-														      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-														      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-														      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-														      'Aboriginal people of the area. It has many springs, waterholes, '+
-														      'rock caves and ancient paintings. Uluru is listed as a World '+
-														      'Heritage Site.</p>'//"Name " + mechanic_list[i]['name'] + "\n Address" + mechanic_list[i]['address']
-
-
-
+																	'<div class="text-center">'+"years.... "+mechanic_list[i]['description']+'</div>'
 
 	                   });
 	                   infowindow.open(map, marker);
@@ -82,13 +68,13 @@
 		<style>
 				html, body {
 					height: 100%;
-					background-color: #FFFFF0;
+					background-color: #eed5b7;
 					margin: 0;
 					padding: 0;
 					font: monseratt;
 				}
 				button{
-					margin-top: 1.5%;
+					margin-top: 0%;
 				}
 				p{
 
@@ -111,8 +97,14 @@
 				.space {
 					height: 8%;
 				}
-				h5{
+				#red-text{
+					color:red;
+				}
+				#green-text{
 					color:green;
+				}
+				#blue-text{
+					color:blue
 				}
 		</style>
 	</head>
@@ -122,20 +114,25 @@
 			<h3>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h3>
 			<h4>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h4>
 			<div class="row">
-					 <div class="col-md-6">
+					 <div class="col-md-6" id = "red-text">
 						 <p>Do you have Free Tows with Insurance or AAA? Most offer free tows with minimum 25 free miles. Save money and use to get your car to a mechanic today! |
 ¿Tienes Tows gratis con seguro o AAA? La mayoría ofrece remolques gratuitos con un mínimo de 25 millas gratis. ¡Ahorre dinero y utilícelo para llevar su auto a un mecánico hoy!</p>
 						 <p></p>
 					 </div>
-					 <div class="col-md-6">
-						 <h5>Are you a mechanic?  Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</h5>
-
-						 <form action="{{ url_for('signup') }}" method="post">
-							 <button class="btn btn-success btn-lg active" aria-pressed="true">Sign Up</button>
+					 <div class="col-md-3" id = "green-text">
+						 <h5>Are you a mechanic? Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</h5>
+						 		<form action="{{ url_for('signup') }}" method="post">
+							 <button class="btn btn-success btn-md active" aria-pressed="true">Sign Up</button>
 						 </form>
-
-					 </div>
+						</div>
+						<div class="col-md-3" id = "blue-text">
+							<h5>Already Member? Sign in! | ¿Ya eres miembro? ¡Registrarse!</h5>
+							<form action="{{ url_for('signin') }}" method="post">
+								<button class="btn btn-primary btn-sm active" aria-pressed="true">Sign In</button>
+							</form>
+						 </div>
 			</div>
+
 
 
 		</div>
