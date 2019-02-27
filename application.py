@@ -18,9 +18,9 @@ app = Flask(__name__) # Instantiate a new web application called `app`, with `__
 
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
-#app.config["SESSION_PERMANENT"] = False
-#app.config["SESSION_TYPE"] = "filesystem"
-#Session (app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session (app)
 
 engine = create_engine("postgres://ayjxjjxhgpzlnl:f150cc319da46e38a1fb398ee335d98fa5468668d0d8aa3da415aed475d08f9b@ec2-54-225-227-125.compute-1.amazonaws.com:5432/d9prh5mib7dh2p")
 #talk to datbase wiTh SQL. Object used to manage connections to database.
@@ -28,6 +28,12 @@ engine = create_engine("postgres://ayjxjjxhgpzlnl:f150cc319da46e38a1fb398ee335d9
 db = scoped_session(sessionmaker(bind=engine)) # for individual sessions
 
 mechanic_list=[]
+#origin="NY"
+#destination="Tokyo"
+#flight = db.execute("SELECT * FROM flights WHERE origin = :origin AND destination = :dest",  {"origin": origin, "dest": destination} ).fetchone()
+#print("flight",flight)
+#db.execute("DELETE FROM flights WHERE origin = :origin", {"origin": origin})
+
 
 #db.execute("CREATE TABLE mechanic_list1(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, years SMALLINT NOT NULL, description VARCHAR NOT NULL, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
 #db.commit()
@@ -77,6 +83,20 @@ def index():
 @app.route("/signup", methods = ["POST"]) #way to get sign in from index to sign-up page
 def signup():
 	return render_template("signup.html")
+
+@app.route("/delete_account/<string:name>", methods = ["POST"]) #way to get sign in from index to sign-up page
+def delete_account(name):
+
+	db.execute("DELETE FROM mechanic_list1 WHERE name = :name", {"name": name})
+	db.commit()
+
+	if session.get("check_mechanic") is not None:
+		if session.get("check_mechanic") is True:
+			session["check_mechanic"] = False
+			print("delete mechanic check_mechanic=false")
+		else:
+			 print("bugbugbugbugbugubugubugubugbugubugubug")
+	return "Account Deleted"
 
 @app.route("/sign-in", methods = ["POST"]) #way to get sign in from index to sign-in page
 def signin():
@@ -159,7 +179,7 @@ def signup_check():
 	else:
 		car_wash=False
 
-		#geocode
+	#geocode
 	params = {
 		'address': address,
 		'key': 'AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM',
@@ -172,6 +192,15 @@ def signup_check():
 	longitude = latlng['lng']
 	print("lat", latlng['lat'])
 	print("lng", latlng['lng'])
+	if session.get("check_mechanic") is not None:
+		if session.get("check_mechanic") is True:
+			print("mechanic exists cancel upload")
+		else:
+			print("No mechanic upload good")
+
+
 	db.execute("INSERT INTO mechanic_list1 (name, password, phone, address, latitude, longitude, email, years, description, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :password, :phone, :address, :latitude, :longitude, :email, :years, :description, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "password":password, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude, "email":email, "years":years, "description":description, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
 	db.commit()
+	if session.get("check_mechanic") is None:
+			session["check_mechanic"] = True
 	return "Uploaded to Database"

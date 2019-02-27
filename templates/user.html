@@ -13,7 +13,7 @@
         html, body {
           height: 100%;
           background-color: #eed5b7;
-          margin: 0;
+          margin: 3%;
           padding: 0;
           font: monseratt;
         }
@@ -43,7 +43,7 @@
       <form action="{{ url_for('signup') }}" method="post">
         <button class="btn btn-warning btn-sm active" aria-pressed="true">Edit Account</button>
       </form>
-      <form action="{{ url_for('signin') }}" method="post">
+      <form action="{{ url_for('delete_account', name=user[0]['name']) }}" method="post">
         <button class="btn btn-danger btn-sm active" aria-pressed="true">Delete Account</button>
       </form>
 
