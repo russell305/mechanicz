@@ -39,31 +39,103 @@
 	           (function(marker, i) {
 	             google.maps.event.addListener(marker, 'click', function() {
 	                   infowindow = new google.maps.InfoWindow({
-	                       content: '<div class="container-fluid">'+
-												 						'<div class="row">'+
-																			'<div class="col-md-4">'+
+	                       content: '<div class="container-fluid text-center">'+
+
+												 						'<div class="row" id = "top-row">'+
+
+																			'<div class="col-md-3">'+
+																				'<p id = "column-title" >Name</p>'+
 																				'<div>'+mechanic_list[i]['name']+'</div>'+
 																			'</div>'+
-																			'<div class="col-md-4">'+
+
+																			'<div class="col-md-3">'+
+																				'<p id = "column-title">Address</p>'+
 																				'<div>'+mechanic_list[i]['address']+'</div>'+
 																			'</div>'+
-																			'<div class="col-md-4">'+
+
+																			'<div class="col-md-3">'+
+																				'<p id = "column-title">Phone</p>'+
 																				'<div>'+mechanic_list[i]['phone']+'</div>'+
 																			'</div>'+
-																		'</div>'+
-												 					'</div>'+
-												 					'<div class="name">'+"email.... "+mechanic_list[i]['email']+'</div>'+
-																	'<div class="text-center">'+"years.... "+mechanic_list[i]['description']+'</div>'
 
+																			'<div class="col-md-3">'+
+																				'<p id = "column-title">Experience</p>'+
+																				'<div>'+"Mechanic for "+mechanic_list[i]['years']+" years"+'</div>'+
+																			'</div>'+
+
+																		'</div>'+
+
+																		'<div class="text-center" id = "description">'+"About: "+mechanic_list[i]['description']+'</div>'+
+
+																		'<div class="text-center" id = "prices">'+"Price estimates for labor given for 2016 Honda Accord, call for your specific vehicle."+'</div>'+
+
+																		'<div class="row" id = "middle-row">'+
+
+																				'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Oil Change: $"+mechanic_list[i]['oil_change']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Starting Problem: $"+mechanic_list[i]['starting_problem']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Alternator: $"+mechanic_list[i]['alternator']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Battery: $"+mechanic_list[i]['battery']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Check Engine: $"+mechanic_list[i]['check_engine']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Spark Plugs: $"+mechanic_list[i]['spark_plugs']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Tune Up: $"+mechanic_list[i]['tune_up']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Valve Cover: $"+mechanic_list[i]['valve_cover']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Back: $"+mechanic_list[i]['pads_back']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Starter: $"+mechanic_list[i]['starter']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Air Filter: $"+mechanic_list[i]['air_filter']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Brake Pads Front: $"+mechanic_list[i]['pads_front']+'</div>'+
+																			'</div>'+
+
+																		'</div>'+
+
+																		'<div class="text-center" id = "prices">'+"Other Services"+'</div>'+
+
+																		'<div class="row" id = "middle-row">'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Mobile Mech: "+mechanic_list[i]['mobile_mechanic']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Fix Flat: "+mechanic_list[i]['fix_flat']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Air Conditioning: "+mechanic_list[i]['air_conditioning']+'</div>'+
+																				'<div class="text-center" id = "description">'+"Car Wash: "+mechanic_list[i]['car_wash']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Auto Body: "+mechanic_list[i]['auto_body']+'</div>'+
+																			'</div>'+
+
+																			'<div class="col-md-3">'+
+																				'<div class="text-center" id = "description">'+"Tire Rotation: "+mechanic_list[i]['tire_rotation']+'</div>'+
+																			'</div>'+
+
+																		'</div>'+
+
+												 					'</div>'
 	                   });
 	                   infowindow.open(map, marker);
 	               });
 	           })(marker, i);
 	         }
 	     }
-
-	     </script>
-
+ 		 </script>
 
 		<style>
 				html, body {
@@ -79,23 +151,43 @@
 				p{
 
 				}
+
+				.top-part{
+					margin-top: 4%;
+					margin-right: 8%;
+					margin-left: 8%;
+				}
+				#description{
+					margin-bottom: 15px;
+				}
+				#prices{
+					margin-bottom: 10px;
+
+					font-weight: 450;
+					font-size: 16px;
+				}
+				#column-title{
+					font-size:20px;
+					font-weight: 500;
+					margin-bottom: 0px;
+				}
+				#top-row{
+					margin-bottom: 10px;
+				}
 				#map {
 					height: 95%;
 					margin-right: 8%;
 					margin-left: 8%;
 					margin-top: 2%;
 				}
-				.name{
-					font-size: 30px;
+				#exp{
+					color:blue;
+					margin: 5px;
+					font-size: 15px;
 				}
-				.container-fluid {
-					margin-top: 4%;
-					margin-right: 8%;
-					margin-left: 8%;
 
-				}
-				.space {
-					height: 8%;
+				#name{
+					font-size:20px;
 				}
 				#red-text{
 					color:red;
@@ -106,10 +198,11 @@
 				#blue-text{
 					color:blue
 				}
+
 		</style>
 	</head>
   <body>
-		<div class="container-fluid text-center">
+		<div class="container-fluid text-center top-part">
 			<h1>Mechanics Near Me | Mecánica Cerca De Mí</h1>
 			<h3>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h3>
 			<h4>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h4>

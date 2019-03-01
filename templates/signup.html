@@ -54,8 +54,14 @@
 	  	 					 				<input type="text" name="password" placeholder="Re-enter Password/Contraseña otra vez" maxlength="20" size = "36" required>
 	  	 					 		</div>
 	  								<div class = "input-fields">
-	  	 					 		  	<input type="text" name="phone" placeholder="Phone/Teléfono" maxlength="20" required>
-	  	 					 		</div>
+	  	 					 		  	<input type="text" name="phone" placeholder="Phone/Teléfono" maxlength="7" min="1" max="99999999" required>
+
+										<div class = "input-fields">
+
+	  										<!-- <input type="number" name="years" placeholder="Area" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required> -->
+												<!-- <input type="number" name="years" placeholder="Phone" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required> -->
+												<!-- <input type="number" name="years" placeholder="Telé" oninput="if(value.length>4)value=value.slice(0,4)" min="1" max="99999" required> -->
+	  								</div>
 	  	 					 		<div class = "input-fields">
 	  	 					 			 	<input type="text" name="street" placeholder="Street/Calle" maxlength="90" required>
 	  	 					 		</div>
@@ -68,9 +74,7 @@
 	  								<div class = "input-fields">
 	  	 					 			 	<input type="text" name="zip_code" placeholder="Zip Code/Código" maxlength="20" >
 	  	 					 		</div>
-	  								<div class = "input-fields">
-	  	 					 				<input type="text" name="email" placeholder="Email/Electrónico" maxlength="40" >
-	  	 					 		</div>
+
 										<div class = "input-fields">
 	  										<span >How many years a mechanic?/¿Cuántos años es mecánico?</span>
 	  										<input type="number" name="years" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
