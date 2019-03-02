@@ -28,7 +28,7 @@
 				}
 				p{
 					font-family: Montserrat;
-					color: red;
+					color: blue;
 					font-size:15px;
 				}
 		</style>
@@ -42,7 +42,7 @@
 
   				<div class="col-md-8" align="center">
   						<div >
-  								<h2>Mechanic Sign Up/Registro Mecánico</h2>
+  								<h1>Mechanic Sign Up/Registro Mecánico</h1>
   								<form action="{{ url_for('signup_check') }}" method="post">
 										<div class = "input-fields" >
 	  	 					 				<input type="text" name="name" placeholder="Name/Nombre" maxlength="20" required>
@@ -53,14 +53,13 @@
 										<div class = "input-fields" >
 	  	 					 				<input type="text" name="password" placeholder="Re-enter Password/Contraseña otra vez" maxlength="20" size = "36" required>
 	  	 					 		</div>
-	  								<div class = "input-fields">
-	  	 					 		  	<input type="text" name="phone" placeholder="Phone/Teléfono" maxlength="7" min="1" max="99999999" required>
+
 
 										<div class = "input-fields">
 
-	  										<!-- <input type="number" name="years" placeholder="Area" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required> -->
-												<!-- <input type="number" name="years" placeholder="Phone" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required> -->
-												<!-- <input type="number" name="years" placeholder="Telé" oninput="if(value.length>4)value=value.slice(0,4)" min="1" max="99999" required> -->
+	  										<input type="number" name="phone1" placeholder="Area" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
+												<input type="number" name="phone2" placeholder="Phone" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
+												<input type="number" name="phone3" placeholder="Num" oninput="if(value.length>4)value=value.slice(0,4)" min="1" max="99999" required>
 	  								</div>
 	  	 					 		<div class = "input-fields">
 	  	 					 			 	<input type="text" name="street" placeholder="Street/Calle" maxlength="90" required>
@@ -80,10 +79,10 @@
 	  										<input type="number" name="years" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
 	  								</div>
 	  								<div class="form-group">
-	  										<textarea class="form-control" name="description" placeholder="Experience, Certifications, and Specialties/Experiencia, Certificaciones y Especialidades." rows="3"  maxlength="400"  required></textarea>
+	  										<textarea class="form-control" name="description" placeholder="Experience, Certifications, and Specialties. Days/Hours Available. | Experiencia, Certificaciones y Especialidades.  Horas días disponibles" rows="3"  maxlength="400"  required></textarea>
 	  							  </div>
-	  								<p> How much would you charge for labor on an average 4-door sedan? (For example a 2015 Honda Accord)</p>
-	  								<p> ¿Cuánto cobraría por la mano de obra en un sedán promedio de 4 puertas? (Por ejemplo, un Honda Accord 2015)</p>
+	  								<p>How much would you charge for labor on an average 2016 Honda Accord? | ¿Cuánto cobraría por mano de obra en un Honda Accord promedio de 2016?</p>
+
 	  								<div class = "input-fields">
 	  										<span >Oil Change/Cambio de Aceite</span>
 	  										<input type="number" name="oil_change" placeholder="$" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
@@ -132,8 +131,7 @@
 	  										<span >Air Filter Replacement/Reemplazo del Filtro de Aire</span>
 	  										<input type="number" name="air_filter" placeholder="$" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
 	  								</div>
-	  								<p>Check or fill in any of the following extra services. Leave blank otherwise</p>
-	  								<p>Compruebe o complete cualquiera de los siguientes servicios adicionales. Deje en blanco de lo contrario.</p>
+	  								<p>Check any of the following extra services. Leave blank otherwise | Marque cualquiera de los siguientes servicios adicionales. Deje en blanco de lo contrario.</p>
 	  								<div class="input-fields">
 	  									<input type="checkbox"  name="mobile_mechanic"> Are you a Mobile Mechanic?/¿Eres un Mecánico Móvil?<br>
 	  								</div>

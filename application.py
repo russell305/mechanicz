@@ -12,6 +12,8 @@ from pprint import pprint
 #import csv
 import json #for Python to Javascript
 import requests #for JSON
+import hashlib
+
 
 
 app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
@@ -35,17 +37,17 @@ mechanic_list=[]
 #db.execute("DELETE FROM flights WHERE origin = :origin", {"origin": origin})
 
 #make phone int
-#db.execute("CREATE TABLE mechanic_list1(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL UNIQUE, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, years SMALLINT NOT NULL, description VARCHAR NOT NULL, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
+#db.execute("CREATE TABLE mechanic_list(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL UNIQUE, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, years SMALLINT NOT NULL, description VARCHAR NOT NULL, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
 #db.commit()
 
 
 @app.route("/", methods = ["GET"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
 def index():
-	mechanicsD = db.execute("SELECT * FROM mechanic_list1").fetchall()
-	print("mechanicsD",mechanicsD)
-	print("Databasesuccess")
+	mechanicsD = db.execute("SELECT * FROM mechanic_list").fetchall()
+	#print("mechanicsD",mechanicsD)
+	#print("Databasesuccess")
 	for i in mechanicsD:
-		print("mechanicsD",i)
+		#print("mechanicsD",i)
 		mechanic_data = {
 			"name": i.name,
 			"phone": i.phone,
@@ -74,8 +76,8 @@ def index():
 			"fix_flat": i.fix_flat,
 			"car_wash": i.car_wash,
 			}
-		print ("description",i.description)
-		print ("years",i.years)
+		#print ("description",i.description)
+		#print ("years",i.years)
 		mechanic_list.append(mechanic_data)
 
 	return render_template("index.html", mechanic_list=mechanic_list)
@@ -84,19 +86,15 @@ def index():
 def signup():
 	return render_template("signup.html")
 
-@app.route("/delete_account/<string:name>", methods = ["POST"]) #way to get sign in from index to sign-up page
-def delete_account(name):
+@app.route("/delete_account/<string:phone>", methods = ["POST"]) #way to get sign in from index to sign-up page
+def delete_account(phone):
 
-	db.execute("DELETE FROM mechanic_list1 WHERE name = :name", {"name": name})
+	db.execute("DELETE FROM mechanic_list WHERE name = :phone", {"phone": phone})
 	db.commit()
+	session["check_mechanic"] = False
 
-	if session.get("check_mechanic") is not None:
-		if session.get("check_mechanic") is True:
-			session["check_mechanic"] = False
-			print("delete mechanic check_mechanic=false")
-		else:
-			 print("bugbugbugbugbugubugubugubugbugubugubug")
-	return "Account Deleted"
+
+	return render_template("index.html", mechanic_list=mechanic_list)
 
 @app.route("/sign-in", methods = ["POST"]) #way to get sign in from index to sign-in page
 def signin():
@@ -105,22 +103,39 @@ def signin():
 @app.route("/user", methods = ["POST"]) # user CRUD
 def user():
 	name = request.form.get("name")
-	password = request.form.get("password")
+	password1 = request.form.get("password")
+	salt = "6Agz"
+	db_password = password1+salt
+	h = hashlib.md5(db_password.encode())
+	password = h.hexdigest()
 
-	if db.execute("SELECT * FROM mechanic_list1 WHERE name = :name AND password = :password", {"name": name, "password": password}).rowcount == 0:
+	if db.execute("SELECT * FROM mechanic_list WHERE name = :name AND password = :password", {"name": name, "password": password}).rowcount == 0:
 		return "name and password dont match"
 	else:
-		user = db.execute("SELECT * FROM mechanic_list1 WHERE name = :name AND password = :password", {"name": name, "password": password}).fetchall()
+		user = db.execute("SELECT * FROM mechanic_list WHERE name = :name AND password = :password", {"name": name, "password": password}).fetchall()
 	print ("user",user)
 	return render_template("user.html", user=user)
 
 @app.route("/signup_check", methods = ["POST"])
 def signup_check():
 	name = request.form.get("name")
-	password = request.form.get("password")
-	phone = request.form.get("phone")
-	if db.execute("SELECT * FROM mechanic_list1 WHERE phone = :phone", {"phone": phone}).rowcount > 0:
-		return "Number already exist sucker!"
+	password1 = request.form.get("password")
+	salt = "6Agz"
+	db_password = password1+salt
+	h = hashlib.md5(db_password.encode())
+	password = h.hexdigest()
+	print("password", password)
+
+	phone1 = request.form.get("phone1")
+	phone2 = request.form.get("phone2")
+	phone3 = request.form.get("phone3")
+	string1 = str(phone1)
+	string2 = str(phone2)
+	string3 = str(phone3)
+	phone=string1+string2+string3
+
+	if db.execute("SELECT * FROM mechanic_list WHERE phone = :phone", {"phone": phone}).rowcount > 0:
+		return "Number already taken, please contact support at 786-873-7526"
 	street = request.form.get("street")
 	city = request.form.get("city")
 	state = request.form.get("state")
@@ -192,15 +207,16 @@ def signup_check():
 	longitude = latlng['lng']
 	print("lat", latlng['lat'])
 	print("lng", latlng['lng'])
-	if session.get("check_mechanic") is not None:
-		if session.get("check_mechanic") is True:
-			print("mechanic exists cancel upload")
-		else:
-			print("No mechanic upload good")
+
+	if session.get("check_mechanic") is True:
+		print("check_mechanic=True / cancel upload")
+		return "Please delete account before uploading another"
+	else:
+		print("check_mechanic=False")
 
 
-	db.execute("INSERT INTO mechanic_list1 (name, password, phone, address, latitude, longitude, years, description, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :password, :phone, :address, :latitude, :longitude,  :years, :description, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "password":password, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude,  "years":years, "description":description, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
+	db.execute("INSERT INTO mechanic_list (name, password, phone, address, latitude, longitude, years, description, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :password, :phone, :address, :latitude, :longitude,  :years, :description, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "password":password, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude,  "years":years, "description":description, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
 	db.commit()
-	if session.get("check_mechanic") is None:
-			session["check_mechanic"] = True
+	session["check_mechanic"] = True
+	print("check_mechanic=True")
 	return "Uploaded to Database"
