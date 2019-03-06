@@ -36,14 +36,14 @@ mechanic_list=[]
 #print("flight",flight)
 #db.execute("DELETE FROM flights WHERE origin = :origin", {"origin": origin})
 
-#make phone int
-#db.execute("CREATE TABLE mechanic_list(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL UNIQUE, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, years SMALLINT NOT NULL, description VARCHAR NOT NULL, paid BOOLEAN, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
-#db.commit()
 
+#db.execute("CREATE TABLE mechanic_list4(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, password VARCHAR NOT NULL, phone VARCHAR NOT NULL UNIQUE, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR NOT NULL, years SMALLINT NOT NULL, description VARCHAR NOT NULL, paid_subscription BOOLEAN, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, hourly_rate SMALLINT NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL)")
+#db.commit()
+#print("dbcreated")
 
 @app.route("/", methods = ["GET"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
 def index():
-	mechanicsD = db.execute("SELECT * FROM mechanic_list").fetchall()
+	mechanicsD = db.execute("SELECT * FROM mechanic_list4").fetchall()
 	#print("mechanicsD",mechanicsD)
 	#print("Databasesuccess")
 	for i in mechanicsD:
@@ -54,7 +54,7 @@ def index():
 			"address": i.address,
 			"longitude": i.longitude,
 			"latitude": i.latitude,
-			# "email": i.email,
+		    "email": i.email,
 			"years": i.years,
 			"description": i.description,
 			"oil_change": i.oil_change,
@@ -69,12 +69,12 @@ def index():
 			"spark_plugs": i.spark_plugs,
 			"valve_cover": i.valve_cover,
 			"air_filter": i.air_filter,
-			"mobile_mechanic": i.mobile_mechanic,
+			"hourly_rate": i.hourly_rate,
 			"air_conditioning": i.air_conditioning,
 			"auto_body": i.auto_body,
 			"tire_rotation": i.tire_rotation,
 			"fix_flat": i.fix_flat,
-			"car_wash": i.car_wash,
+
 			}
 		#print ("description",i.description)
 		#print ("years",i.years)
@@ -89,12 +89,10 @@ def signup():
 @app.route("/delete_account/<string:phone>", methods = ["POST"]) #way to get sign in from index to sign-up page
 def delete_account(phone):
 
-	db.execute("DELETE FROM mechanic_list WHERE phone = :phone", {"phone": phone})
+	db.execute("DELETE FROM mechanic_list4 WHERE phone = :phone", {"phone": phone})
 	db.commit()
 	session["check_mechanic"] = False
-
-
-	return render_template("index.html", mechanic_list=mechanic_list)
+	return index()
 
 @app.route("/sign-in", methods = ["POST"]) #way to get sign in from index to sign-in page
 def signin():
@@ -109,10 +107,10 @@ def user():
 	h = hashlib.md5(db_password.encode())
 	password = h.hexdigest()
 
-	if db.execute("SELECT * FROM mechanic_list WHERE name = :name AND password = :password", {"name": name, "password": password}).rowcount == 0:
+	if db.execute("SELECT * FROM mechanic_list4 WHERE name = :name AND password = :password", {"name": name, "password": password}).rowcount == 0:
 		return "name and password dont match"
 	else:
-		user = db.execute("SELECT * FROM mechanic_list WHERE name = :name AND password = :password", {"name": name, "password": password}).fetchall()
+		user = db.execute("SELECT * FROM mechanic_list4 WHERE name = :name AND password = :password", {"name": name, "password": password}).fetchall()
 	print ("user",user)
 	return render_template("user.html", user=user)
 
@@ -134,13 +132,13 @@ def signup_check():
 	string3 = str(phone3)
 	phone=string1+string2+string3
 
-	if db.execute("SELECT * FROM mechanic_list WHERE phone = :phone", {"phone": phone}).rowcount > 0:
+	if db.execute("SELECT * FROM mechanic_list4 WHERE phone = :phone", {"phone": phone}).rowcount > 0:
 		return "Number already taken, please contact support at 786-873-7526"
 	street = request.form.get("street")
 	city = request.form.get("city")
 	state = request.form.get("state")
 	zip_code = request.form.get("zip_code")
-	# email = request.form.get("email")
+	email = request.form.get("email")
 	years = request.form.get("years")
 	description = request.form.get("description")
 	oil_change = request.form.get("oil_change")
@@ -155,19 +153,14 @@ def signup_check():
 	spark_plugs = request.form.get("spark_plugs")
 	valve_cover = request.form.get("valve_cover")
 	air_filter = request.form.get("air_filter")
-	mobile_mechanic = request.form.get("mobile_mechanic")
+	hourly_rate = request.form.get("hourly_rate")
 	air_conditioning = request.form.get("air_conditioning")
 	auto_body = request.form.get("auto_body")
 	tire_rotation = request.form.get("tire_rotation")
 	fix_flat = request.form.get("fix_flat")
-	car_wash = request.form.get("car_wash")
 	address = street+", "+city+", "+state+", "+zip_code
 	print(address)
 
-	if mobile_mechanic=="on":
-		mobile_mechanic=True
-	else:
-		mobile_mechanic=False
 
 	if air_conditioning=="on":
 		air_conditioning=True
@@ -189,11 +182,6 @@ def signup_check():
 	else:
 		tire_rotation=False
 
-	if car_wash=="on":
-		car_wash=True
-	else:
-		car_wash=False
-
 	#geocode
 	params = {
 		'address': address,
@@ -210,13 +198,13 @@ def signup_check():
 
 	if session.get("check_mechanic") is True:
 		print("check_mechanic=True / cancel upload")
-		return "Please delete account before uploading another"
+		#return "Please delete account before uploading another"
 	else:
 		print("check_mechanic=False")
 
 
-	db.execute("INSERT INTO mechanic_list (name, password, phone, address, latitude, longitude, years, description, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :password, :phone, :address, :latitude, :longitude,  :years, :description, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "password":password, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude,  "years":years, "description":description, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
+	db.execute("INSERT INTO mechanic_list4 (name, password, phone, address, email, latitude, longitude, years, description, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, hourly_rate, air_conditioning, auto_body, tire_rotation, fix_flat) VALUES (:name, :password, :phone, :address, :email, :latitude, :longitude,  :years, :description, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :hourly_rate, :air_conditioning, :auto_body, :tire_rotation, :fix_flat)", {"name":name, "password":password, "phone":phone, "address":address, "email":email, "latitude":latitude, "longitude":longitude,  "years":years, "description":description, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "hourly_rate":hourly_rate, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat})
 	db.commit()
 	session["check_mechanic"] = True
 	print("check_mechanic=True")
-	return "Uploaded to Database"
+	return index()

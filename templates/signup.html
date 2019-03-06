@@ -53,7 +53,9 @@
 										<div class = "input-fields" >
 	  	 					 				<input type="text" name="password" placeholder="Re-enter Password/Contraseña otra vez" maxlength="20" size = "36" required>
 	  	 					 		</div>
-
+										<div class = "input-fields" >
+	  	 					 				<input type="text" name="email" placeholder="Email" maxlength="40" size = "36" required>
+	  	 					 		</div>
 
 										<div class = "input-fields">
 
@@ -77,6 +79,10 @@
 										<div class = "input-fields">
 	  										<span >How many years a mechanic?/¿Cuántos años es mecánico?</span>
 	  										<input type="number" name="years" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
+	  								</div>
+										<div class = "input-fields">
+	  										<span >Hourly Rate/Tarifa Por Hora</span>
+	  										<input type="number" name="hourly_rate" placeholder="$" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
 	  								</div>
 	  								<div class="form-group">
 	  										<textarea class="form-control" name="description" placeholder="Experience, Certifications, and Specialties. Days/Hours Available. | Experiencia, Certificaciones y Especialidades.  Horas días disponibles" rows="3"  maxlength="400"  required></textarea>
@@ -132,9 +138,7 @@
 	  										<input type="number" name="air_filter" placeholder="$" oninput="if(value.length>3)value=value.slice(0,3)" min="1" max="99999" required>
 	  								</div>
 	  								<p>Check any of the following extra services. Leave blank otherwise | Marque cualquiera de los siguientes servicios adicionales. Deje en blanco de lo contrario.</p>
-	  								<div class="input-fields">
-	  									<input type="checkbox"  name="mobile_mechanic"> Are you a Mobile Mechanic?/¿Eres un Mecánico Móvil?<br>
-	  								</div>
+
 	  								<div class="input-fields">
 	  										<input type="checkbox" name="air_conditioning"> Air Conditioning/Aire Acondicionado<br>
 	  								</div>
@@ -147,9 +151,7 @@
 	  								<div class="input-fields">
 	  										<input type="checkbox" name="tire_rotation"> Tire Rotation/Rotación de Llanta<br>
 	  								</div>
-	  								<div class="input-fields">
-	  										<input type="checkbox" name="car_wash"> Car Wash Interior/Exterior/Lavado de coches Interior/Exterior<br>
-	  								</div>
+
 	  								<button class="btn btn-success btn-md ">Submit</button>
   								</form>
   								</div>

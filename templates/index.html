@@ -63,12 +63,6 @@
 								mechanic_list[i]['fix_flat']="NO"
 						 }
 
-						 if (mechanic_list[i]['car_wash']==true) {
-							  mechanic_list[i]['car_wash']="YES"
-						 }
-						 else	{
-								mechanic_list[i]['car_wash']="NO"
-						 }
 
 						 var href = "tel:"+mechanic_list[i]['phone'];
 						 myLatLng[i] = {lat: mechanic_list[i]['latitude'], lng: mechanic_list[i]['longitude']};
@@ -107,15 +101,15 @@
 																			'</div>'+
 
 																			'<div class="col-md-2">'+
-																				'<p id = "column-title">Mobile</p>'+
-																				'<div>'+mechanic_list[i]['mobile_mechanic']+'</div>'+
+																				'<p id = "column-title">Rate</p>'+
+																				'<div>'+"$"+mechanic_list[i]['hourly_rate']+"/hr"+'</div>'+
 																			'</div>'+
 
 																		'</div>'+
 
-																		'<div class="text-center" id = "description">'+"About: "+mechanic_list[i]['description']+'</div>'+
+																		'<div class="text-center" id = "description">'+'<b>'+"About: "+'</b>'+mechanic_list[i]['description']+'</div>'+
 
-																		'<div class="text-center" id = "prices">'+"Price estimates for labor given for 2016 Honda Accord, call for your specific vehicle | Las estimaciones de precios para la mano de obra dada para el 2016 Honda Accord, llame a su vehículo específico"+'</div>'+
+																		'<div class="text-center" id = "prices">'+"Price estimates for popular services on 2016 Honda Accord, call for your specific vehicle."+'</div>'+
 
 																		'<div class="row" id = "middle-row">'+
 
@@ -149,19 +143,16 @@
 
 																		'<div class="row" id = "middle-row">'+
 
-																			'<div class="col-md-4">'+
+																			'<div class="col-md-6">'+
 																				'<div class="text-center" id = "description">'+"Tire Rotation: "+mechanic_list[i]['tire_rotation']+'</div>'+
 																				'<div class="text-center" id = "description">'+"Fix Flat: "+mechanic_list[i]['fix_flat']+'</div>'+
 																			'</div>'+
 
-																			'<div class="col-md-4">'+
+																			'<div class="col-md-6">'+
 																				'<div class="text-center" id = "description">'+"Air Conditioning: "+mechanic_list[i]['air_conditioning']+'</div>'+
-																				'<div class="text-center" id = "description">'+"Car Wash: "+mechanic_list[i]['car_wash']+'</div>'+
-																			'</div>'+
-
-																			'<div class="col-md-4">'+
 																				'<div class="text-center" id = "description">'+"Auto Body: "+mechanic_list[i]['auto_body']+'</div>'+
 																			'</div>'+
+
 
 
 																		'</div>'+
@@ -252,24 +243,16 @@
   <body>
 
 		<div class="container-fluid text-center top-part">
-			<h1>Mechanics Near Me | Mecánica Cerca De Mí</h1>
-			<h2>50-75% cheaper than Shops or Dealership | 50-75% más barato que las Tiendas o el Concesionario</h2>
-			<h3>Same mechanics, same tools, stop gettiting ripped off! | ¡La misma mecánica, las mismas herramientas, dejan de ser estafadas!</h3>
+			<h1>Mobile Mechanics Near Me | Mecánica Móvil Cerca de Mí</h1>
+			<h3>Are you a mobile mechanic? Sign up free! | ¿Eres mecánico móvil? ¡Regístrate gratis!</h3>
+			<form action="{{ url_for('signup') }}" method="post">
+		 		<button class="btn btn-success btn-md active" aria-pressed="true">Sign Up</button>
+	 		</form>
+			
 
-			<div class="row">
-					 <div class="col-md-9" id="blue-text">
-						 <h4>Do you have Free Tows with Insurance or AAA? Most offer free tows with minimum 25 free miles. Save money and use free tows to get your car to a mechanic today! |
-¿Tienes Tows gratis con seguro o AAA? La mayoría ofrece remolques gratuitos con un mínimo de 25 millas gratis. ¡Ahorre dinero y use remolques gratuitos para llevar su auto a un mecánico hoy!</h4>
-					</div>
-					 <div class="col-md-3" id="green-text">
-						 <h4>Are you a mechanic? Sign up free! | ¿Eres mecánico? ¡Regístrate gratis!</h4>
-						 		<form action="{{ url_for('signup') }}" method="post">
-							 <button class="btn btn-success btn-md active" aria-pressed="true">Sign Up</button>
-						 </form>
-						</div>
-			</div>
 
-			<h3>Click on marker for mecahnic info | Haga clic en el marcador para información mecahnic</h3>
+
+			<h3>Click on marker for mobile mecahnic info | Haga clic en el marcador para información mecánico móvil</h3>
 	</div>
 
 		<div id="map"></div>
