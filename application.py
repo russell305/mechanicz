@@ -3,7 +3,7 @@
 #key: 0S6vFxQgJiRIw2CZbc2Yg
 #secret: 0kmzCjBS62odOXkfg4EcYnoBND3IM28ANuEFlTlWig
 #import datetime
-from flask import Flask, render_template, request, session, jsonify# Import the class `Flask` from the `flask` module, written by someone else.
+from flask import Flask, render_template, request, session, redirect, url_for# Import the class `Flask` from the `flask` module, written by someone else.
 from flask_session import Session
 import os
 from sqlalchemy import create_engine
@@ -16,8 +16,10 @@ import hashlib
 
 
 
-app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
 
+
+app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
+#app = Flask(__name__, static_url_path = "/tmp", static_folder = "tmp")
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
 app.config["SESSION_PERMANENT"] = False
@@ -86,17 +88,21 @@ def index():
 def signup():
 	return render_template("signup.html")
 
+
+
 @app.route("/delete_account/<string:phone>", methods = ["POST"]) #way to get sign in from index to sign-up page
 def delete_account(phone):
 
 	db.execute("DELETE FROM mechanic_list4 WHERE phone = :phone", {"phone": phone})
 	db.commit()
 	session["check_mechanic"] = False
-	return index()
+	
+	return redirect(url_for("index"))
 
 @app.route("/sign-in", methods = ["POST"]) #way to get sign in from index to sign-in page
 def signin():
 	return render_template("sign-in.html")
+
 
 @app.route("/user", methods = ["POST"]) # user CRUD
 def user():
@@ -207,4 +213,4 @@ def signup_check():
 	db.commit()
 	session["check_mechanic"] = True
 	print("check_mechanic=True")
-	return index()
+	return redirect(url_for("index"))

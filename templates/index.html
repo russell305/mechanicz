@@ -4,7 +4,8 @@
 	<head>
 		<title> Mobile Mechanic Miami </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+		<!-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='image/wrench.jpg') }}">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
@@ -22,8 +23,8 @@
 
 	     function initMap() {
 	         var map = new google.maps.Map(document.getElementById('map'), {
-	           zoom: 12,
-	           center: {lat: 25.8317, lng: -80.2}
+	           zoom: 10,
+	           center: {lat: 25.8317, lng: -80.25}
 	         });
 
 	         var marker = {}
@@ -64,7 +65,7 @@
 						    path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
 						    fillColor: 'yellow',
 						    fillOpacity: 0.8,
-						    scale: .061,
+						    scale: .091,
 						    strokeColor: 'red',
 						    strokeWeight: 1
 						  };
@@ -75,9 +76,9 @@
 	           marker = new google.maps.Marker({
 	           position: myLatLng[i],
 	           map: map,
+						 // icon: goldStar,
 
 
-						 labelContent: '<i class="fas fa-truck-pickup" style="color:rgba(153,102,102,0.8);"></i>',
 			       labelAnchor: new google.maps.Point(22, 50),
 			       labelClass: "labels" // the CSS class for the label
 	           });
@@ -91,6 +92,7 @@
 
 												 						'<div class="row" id = "top-row">'+
 
+																		// '<img src="{{ url_for("static", filename = "image/favicon.png") }}" alt="User Image" width="64" height="64">'+
 																			'<div class="col-md-2 ">'+
 																				'<p id = "column-title" >Name</p>'+
 																				'<div>'+mechanic_list[i]['name']+'</div>'+
@@ -254,8 +256,8 @@
   <body>
 
 		<div class="container-fluid text-center top-part">
-			<h1>Mobile Mechanic Near Me | Mecánico Móvil Cerca de Mí</h1>
-			<h3>Are you a mobile mechanic? Sign up free! | ¿Eres mecánico móvil? ¡Regístrate gratis!</h3>
+			<h1>Mobile Mechanic Miami</h1>
+			<h3>Are you a mobile mechanic? Sign up free!</h3>
 			<form action="{{ url_for('signup') }}" method="post">
 
 		 		<button class="btn btn-success btn-md active" aria-pressed="true">Sign Up</button>
@@ -265,12 +267,12 @@
 						</div>
 
 
-			<h4>Click on marker for mobile mecahnic info | Haga clic en el marcador para información mecánico móvil</h4>
+			<h4>Click on markers to compare mobile mecahnic distance and information</h4>
 	</div>
 
 		<div id="map"></div>
 		<div class="text-center bottom-margin" id="blue-text">
-			<h5>Mechanic Sign In | Ingreso mecánico</h5>
+			<h5>Mechanic Sign In</h5>
 			<form action="{{ url_for('signin') }}" method="post">
 				<button class="btn btn-primary btn-sm active" aria-pressed="true">Sign In</button>
 			</form>
